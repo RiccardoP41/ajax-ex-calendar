@@ -24,12 +24,30 @@
 
 $(document).ready(function(){
 
-    var startingDate = moment("2018-12-01"); // salvo la data di partenza in una variabile
-
+    var startingDate = moment("2018-01-01"); // salvo la data di partenza in una variabile
     insGiorno(startingDate); //Richiamo una funzione per inserire i giorni nel calendario
-    insVacanza(startingDate)    //Richiamo una funzione per modificare i giorni di vacanza nel calendario
+    insVacanza(startingDate); //Richiamo una funzione per modificare i giorni di vacanza nel calendario
 
+    // Scorrere il calendario
     
+    $(".next").click(function () {
+        var meseDopo = startingDate.add( 1, 'M');
+        console.log(meseDopo);
+        $(".lista-giorni").empty();
+        insGiorno(meseDopo);
+        insVacanza(meseDopo);
+    })
+
+    $(".prev").click(function () {
+        var mesePrima = startingDate.subtract( 1, 'M');
+        $(".lista-giorni").empty();
+        insGiorno(mesePrima);
+        insVacanza(mesePrima);
+    })
+
+
+
+
 
 
 
@@ -56,7 +74,7 @@ function insGiorno(data) {
             dataCompleta: anno + "-" + data.format("MM") + "-" + addZero(i) // mi servirà per aggiungere le festività
          };
         var html = template(context);
-        $(".lista-mesi").append(html);  // stampo tutti gli elementi ciclati ed elaborati
+        $(".lista-giorni").append(html);  // stampo tutti gli elementi ciclati ed elaborati
     }
 }
 
@@ -70,7 +88,6 @@ function insVacanza(data) {
                 month: data.month() // mese corrente
             },
             success: function (risposta) {
-
                 for (var i = 0; i < risposta.response.length; i++) {
                     var liVacanza = $('li[data-complete-date="'+ risposta.response[i].date + '"]');
                     liVacanza.append(" - " + risposta.response[i].name);
