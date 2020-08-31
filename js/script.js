@@ -24,12 +24,12 @@
 
 $(document).ready(function(){
 
-    var startingDate = moment("2018-01-01"); // salvo la data di partenza in una variabile
+    var startingDate = moment("2018-12-01"); // salvo la data di partenza in una variabile
 
     insGiorno(startingDate); //Richiamo una funzione per inserire i giorni nel calendario
+    insVacanza(startingDate)    //Richiamo una funzione per modificare i giorni di vacanza nel calendario
 
-
-
+    
 
 
 
@@ -47,16 +47,39 @@ function insGiorno(data) {
 
     var giorniMese = data.daysInMonth(); // salvo quanti giorni ci sono nel mese selzionato e mi restituisce un numero
 
-    for (var i = 1; i < giorniMese; i++) {          //ciclo i giorni del mese corrente per inserirli nel template
+    for (var i = 1; i <= giorniMese; i++) {          //ciclo i giorni del mese corrente per inserirli nel template
         var source = $("#entry-template").html();
         var template = Handlebars.compile(source);
         var context = {            //modifico questa variabile di handlebars per utilizzare le giuste coppie chiave\valore
             day: addZero(i),        // con la funzione metto lo 0 davanti ai numeri <10
-            month: mese
+            month: mese,
+            dataCompleta: anno + "-" + data.format("MM") + "-" + addZero(i) // mi servirà per aggiungere le festività
          };
         var html = template(context);
         $(".lista-mesi").append(html);  // stampo tutti gli elementi ciclati ed elaborati
     }
+}
+
+function insVacanza(data) {
+    $.ajax(
+        {
+            url:"https:flynn.boolean.careers/exercises/api/holidays", // non copio le coppie chiavi\valore del link mi servono sotto
+            method: "GET",
+            data:{ // qui riporto le coppie chiavi valore
+                year: data.year(), //anno corrente
+                month: data.month() // mese corrente
+            },
+            success: function (risposta) {
+
+                for (var i = 0; i < risposta.response.length; i++) {
+                    var liVacanza = $('li[data-complete-date="'+ risposta.response[i].date + '"]');
+                    liVacanza.append(" - " + risposta.response[i].name);
+                    liVacanza.addClass("red");
+                }
+
+            }
+        }
+    )
 }
 
 function addZero(n){
