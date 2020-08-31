@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/style.css">
+        <title>calendar</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment-with-locales.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+
+    </head>
+    <body>
+        <div class="container">
+            <button class="prev" type="button" name="button"><i class="fas fa-arrow-left"></i></button>
+            <h1 class="mese" data-this-date="2018-01-01"></h1>
+            <button class="next" type="button" name="button"><i class="fas fa-arrow-right"></i></button>
+
+            <ul class="lista-mesi"></ul>
+        </div>
+
+        <script id="entry-template" type="text/x-handlebars-template">
+            <li data-complete-date="{{dataCompleta}}">{{day}} {{month}}</li>
+        </script>
+
+
+        <script src="js/script.js" charset="utf-8"></script>
+    </body>
+</html>
