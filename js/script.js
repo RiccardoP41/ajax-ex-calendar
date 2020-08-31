@@ -24,14 +24,9 @@
 
 $(document).ready(function(){
 
-    var startingDate = moment("2018-01-01");
-    // console.log(startingDate);
-    var mese = startingDate.format("MMMM");
-    var anno = startingDate.format("YYYY");
-    console.log(mese + anno);
+    var startingDate = moment("2018-01-01"); // salvo la data di partenza in una variabile
 
-
-
+    insGiorno(startingDate); //Richiamo una funzione per inserire i giorni nel calendario
 
 
 
@@ -40,3 +35,33 @@ $(document).ready(function(){
 
 
 });
+
+// FUNZIONI
+
+function insGiorno(data) {
+
+    var mese = data.format("MMMM"); // formatto i parametri che mi servono nella maniera adeguata
+    var anno = data.format("YYYY"); //  //
+
+    $("h1.mese").html(mese + " " + anno); // stampo ciò che ho preparato nel posto giusto
+
+    var giorniMese = data.daysInMonth(); // salvo quanti giorni ci sono nel mese selzionato e mi restituisce un numero
+
+    for (var i = 1; i < giorniMese; i++) {          //ciclo i giorni del mese corrente per inserirli nel template
+        var source = $("#entry-template").html();
+        var template = Handlebars.compile(source);
+        var context = {            //modifico questa variabile di handlebars per utilizzare le giuste coppie chiave\valore
+            day: addZero(i),        // con la funzione metto lo 0 davanti ai numeri <10
+            month: mese
+         };
+        var html = template(context);
+        $(".lista-mesi").append(html);  // stampo tutti gli elementi ciclati ed elaborati
+    }
+}
+
+function addZero(n){
+    if (n < 10) {
+        return "0" + n;
+    }
+    return n;
+}
