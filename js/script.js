@@ -29,20 +29,28 @@ $(document).ready(function(){
     insVacanza(startingDate); //Richiamo una funzione per modificare i giorni di vacanza nel calendario
 
     // Scorrere il calendario
-    
+
     $(".next").click(function () {
-        var meseDopo = startingDate.add( 1, 'M');
-        console.log(meseDopo);
-        $(".lista-giorni").empty();
-        insGiorno(meseDopo);
-        insVacanza(meseDopo);
+        if (startingDate.format("MM") != "12") {
+            var meseDopo = startingDate.add( 1, 'M');
+            $(".lista-giorni").empty();
+            insGiorno(meseDopo);
+            insVacanza(meseDopo);
+        } else {
+            alert("ERROR");
+        }
     })
 
     $(".prev").click(function () {
-        var mesePrima = startingDate.subtract( 1, 'M');
-        $(".lista-giorni").empty();
-        insGiorno(mesePrima);
-        insVacanza(mesePrima);
+        if (startingDate.format("MM") != "01") {
+            var mesePrima = startingDate.subtract( 1, 'M');
+            $(".lista-giorni").empty();
+            insGiorno(mesePrima);
+            insVacanza(mesePrima);
+        } else {
+            alert("ERROR");
+        }
+
     })
 
 
