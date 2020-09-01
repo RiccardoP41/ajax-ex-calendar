@@ -24,7 +24,7 @@
 
 $(document).ready(function(){
 
-    var startingDate = moment("2018-01-01"); // salvo la data di partenza in una variabile
+    var startingDate = moment($(".mese").attr("data-this-date")); // salvo la data di partenza in una variabile
     insGiorno(startingDate); //Richiamo una funzione per inserire i giorni nel calendario
     insVacanza(startingDate); //Richiamo una funzione per modificare i giorni di vacanza nel calendario
 
@@ -32,10 +32,7 @@ $(document).ready(function(){
 
     $(".next").click(function () {
         if (startingDate.format("MM") != "12") {
-            var meseDopo = startingDate.add( 1, 'M');
-            $(".lista-giorni").empty();
-            insGiorno(meseDopo);
-            insVacanza(meseDopo);
+            next(startingDate)
         } else {
             alert("ERROR");
         }
@@ -43,10 +40,7 @@ $(document).ready(function(){
 
     $(".prev").click(function () {
         if (startingDate.format("MM") != "01") {
-            var mesePrima = startingDate.subtract( 1, 'M');
-            $(".lista-giorni").empty();
-            insGiorno(mesePrima);
-            insVacanza(mesePrima);
+            prev(startingDate)
         } else {
             alert("ERROR");
         }
@@ -105,6 +99,20 @@ function insVacanza(data) {
             }
         }
     )
+}
+
+function next(data) {
+    data.add( 1, 'M');
+    $(".lista-giorni").empty();
+    insGiorno(data);
+    insVacanza(data);
+}
+
+function prev(data) {
+    data.subtract( 1, 'M');
+    $(".lista-giorni").empty();
+    insGiorno(data);
+    insVacanza(data);
 }
 
 function addZero(n){
